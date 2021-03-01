@@ -1,0 +1,117 @@
+{
+	"name": "cqh-insert",
+	"displayName": "cqh-insert",
+	"description": "",
+	"version": "0.0.1",
+	"publisher": "cqh",
+	"engines": {
+		"vscode": "^1.53.0"
+	},
+	"categories": [
+		"Other"
+	],
+	"repository": {
+		"url": "https://github.com:chen19901225/cqh-insert.git"
+	},
+	"activationEvents": [
+		"*"
+	],
+	"main": "./dist/extension.js",
+	"contributes": {
+		"commands": [
+			{
+				"command": "cqh-insert.insert",
+				"title": "cqh-insert insert"
+			}
+		],
+		"keybindings": [
+			{
+				"command": "cqh-insert.insert",
+				"key": "alt+m",
+				"when": "editorTextFocus"
+			}
+		],
+		"configuration": {
+			"properties": {
+				"cqh-insert.byExt": {
+					"type": "array",
+					"items": {
+						"type": "object",
+						"properties": {
+							"ext": {
+								"type": "string",
+								"description": "file ext : eg [.go]"
+							},
+							"configList": {
+								"type": "array",
+								"items": {
+									"type": "object",
+									"properties": {
+										"name": {
+											"type": "string",
+											"description": " item name showed in dropdown menu list"
+										},
+										"list": {
+											"type": "array",
+											"items": {
+												"type": "string",
+												"description": "insert lines"
+											}
+										}
+									}
+								}
+
+							}
+						},
+						"default": [
+							{
+								"ext": ".py",
+								"configList": [
+									{
+										"name": "self",
+										"list": ["self"]
+									},
+									{
+										"name": "from",
+										"list": ["from"]
+									},
+									{
+										"name": "import",
+										"list": ["import"]
+									}
+								]
+							}
+						]
+					}
+				}
+			}
+		}
+	},
+	"scripts": {
+		"vscode:prepublish": "npm run package",
+		"compile": "webpack --devtool nosources-source-map --config ./build/node-extension.webpack.config.js",
+		"watch": "webpack --watch --devtool nosources-source-map --info-verbosity verbose --config ./build/node-extension.webpack.config.js",
+		"package": "webpack --mode production --config ./build/node-extension.webpack.config.js",
+		"test-compile": "tsc -p ./",
+		"test-watch": "tsc -watch -p ./",
+		"pretest": "npm run test-compile && npm run lint",
+		"lint": "eslint src --ext ts",
+		"test": "node ./out/test/runTest.js"
+	},
+	"devDependencies": {
+		"@types/vscode": "^1.53.0",
+		"@types/glob": "^7.1.3",
+		"@types/mocha": "^8.0.0",
+		"@types/node": "^12.11.7",
+		"eslint": "^7.9.0",
+		"@typescript-eslint/eslint-plugin": "^4.1.1",
+		"@typescript-eslint/parser": "^4.1.1",
+		"glob": "^7.1.6",
+		"mocha": "^8.1.3",
+		"typescript": "^4.0.2",
+		"vscode-test": "^1.4.0",
+		"ts-loader": "^8.0.3",
+		"webpack": "^4.44.1",
+		"webpack-cli": "^3.3.12"
+	}
+}
