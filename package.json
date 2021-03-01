@@ -2,7 +2,7 @@
 	"name": "cqh-insert",
 	"displayName": "cqh-insert",
 	"description": "",
-	"version": "0.0.1",
+	"version": "0.0.3",
 	"publisher": "cqh",
 	"engines": {
 		"vscode": "^1.53.0"
@@ -35,6 +35,25 @@
 			"properties": {
 				"cqh-insert.byExt": {
 					"type": "array",
+					"default": [
+						{
+							"ext": ".py",
+							"configList": [
+								{
+									"name": "self",
+									"list": ["self"]
+								},
+								{
+									"name": "from",
+									"list": ["from"]
+								},
+								{
+									"name": "import",
+									"list": ["import"]
+								}
+							]
+						}
+					],
 					"items": {
 						"type": "object",
 						"properties": {
@@ -62,26 +81,8 @@
 								}
 
 							}
-						},
-						"default": [
-							{
-								"ext": ".py",
-								"configList": [
-									{
-										"name": "self",
-										"list": ["self"]
-									},
-									{
-										"name": "from",
-										"list": ["from"]
-									},
-									{
-										"name": "import",
-										"list": ["import"]
-									}
-								]
-							}
-						]
+						}
+
 					}
 				}
 			}
