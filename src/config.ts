@@ -34,3 +34,7 @@ export function getSnippetForExt(ext: string): IExtConfig | null {
     return snippet;
     //return null;
 }
+
+export function getConfig(): IConfig {
+    return vscode.workspace.getConfiguration("cqh-insert") as IConfig;
+}

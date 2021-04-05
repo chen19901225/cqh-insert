@@ -3,6 +3,7 @@
 import * as vscode from 'vscode';
 import * as os from "os";
 import { getSnippetForExt } from './config';
+import { Manager } from "./manager"
 
 // this method is called when your extension is activated
 // your extension is activated the very first time the command is executed
@@ -15,11 +16,17 @@ export function activate(context: vscode.ExtensionContext) {
 	// The command has been defined in the package.json file
 	// Now provide the implementation of the command with registerCommand
 	// The commandId parameter must match the command field in package.json
+	let manager = new Manager();
+	// 尝试加快速度
+	vscode.workspace.onDidChangeConfiguration(() => {
+		manager.config = manager.loadConfig();
+	})
 	let disposable = vscode.commands.registerTextEditorCommand('cqh-insert.insert', (textEditor, edit) => {
 		// The code you place here will be executed every time your command is executed
 		let document = textEditor.document;
 		let position = textEditor.selection.active;
-		let config = getSnippetForExt(document.uri.path);
+		//let config = getSnippetForExt(document.uri.path);
+		let config = manager.getSnippetForExt(document.uri.path)
 		if (config == null) {
 			vscode.window.showErrorMessage(`cannot find snippet for [${document.uri.path}]`)
 			return;
@@ -30,11 +37,11 @@ export function activate(context: vscode.ExtensionContext) {
 		for (let value of insert_list) {
 			quickPickItem.push({
 				"label": `${index}.${value.name}`,
-				"description": ""+index
+				"description": "" + index
 			})
 			index = index + 1
 		}
-		
+
 
 		vscode.window.showQuickPick(quickPickItem).then(item => {
 			if (item) {
@@ -43,10 +50,10 @@ export function activate(context: vscode.ExtensionContext) {
 				if (indexStr) {
 					let indexNum = parseInt(indexStr);
 
-					let insertItem = insert_list[indexNum-1];
+					let insertItem = insert_list[indexNum - 1];
 					let insert_line = insertItem.list.join(os.EOL);
 					let activeEditor = vscode.window.activeTextEditor;
-					if(activeEditor) {
+					if (activeEditor) {
 						activeEditor.insertSnippet(new vscode.SnippetString(insert_line), position);
 					} else {
 						vscode.window.showErrorMessage("activeEditor is null");
@@ -66,4 +73,4 @@ export function activate(context: vscode.ExtensionContext) {
 }
 
 // this method is called when your extension is deactivated
-export function deactivate() {}
+export function deactivate() { }
